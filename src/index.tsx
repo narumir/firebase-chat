@@ -9,8 +9,14 @@ import {
   Provider as ReduxProvider,
 } from "react-redux";
 import {
+  getAnalytics,
+} from "firebase/analytics";
+import {
   store,
 } from './store';
+import {
+  firebaseApp,
+} from './firebase';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -20,6 +26,7 @@ const router = createBrowserRouter([
   },
 ]);
 
+getAnalytics(firebaseApp);
 const element = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(element);
 root.render(
