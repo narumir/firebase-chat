@@ -1,8 +1,19 @@
-import React from 'react';
+import {
+  useLayoutEffect,
+} from 'react';
+import {
+  getAnalytics,
+} from "firebase/analytics";
+import {
+  firebaseApp,
+} from './firebase';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
+  useLayoutEffect(() => {
+    getAnalytics(firebaseApp);
+  }, []);
   return (
     <div className="App">
       <header className="App-header">
