@@ -13,6 +13,9 @@ import {
 import {
   store,
 } from './store';
+import {
+  initializeFirebase,
+} from './firebase';
 import './index.css';
 
 const router = createBrowserRouter([
@@ -41,3 +44,5 @@ root.render(
     </ReduxProvider>
   </React.StrictMode>
 );
+
+initializeFirebase();
