@@ -10,12 +10,12 @@ body {
   margin: 0 auto;
 }
 
-.auth-wrapper h1 {
-  font-weight: 100;
+.auth-wrapper h3 {
+  font-weight: 600;
   color: white;
   text-align: center;
+  font-size: 1.8rem;
   padding-bottom: 10px;
-  border-bottom: 1px solid rgb(79, 98, 148);
 }
 
 .auth-wrapper .form {

@@ -1,3 +1,4 @@
+import md5 from "md5";
 import {
     useRef,
     useState,
@@ -14,8 +15,13 @@ import {
     updateProfile,
 } from "firebase/auth";
 import {
-    
+    getDatabase,
+	set,
+	ref,
 } from "firebase/database";
+import {
+	firebaseApp,
+} from "../firebase";
 
 type RegisterFormData = {
     email: string;
@@ -37,9 +43,14 @@ export default function RegisterPage() {
             const account = await createUserWithEmailAndPassword(auth, data.email, data.password)
             await updateProfile(account.user, {
                 displayName: data.name,
-                photoURL: `https://gravatar.com/avatar/${account.user.uid}`
+                photoURL: `https://gravatar.com/avatar/${md5(account.user.email as string)}`
             });
             await account.user.reload();
+			const database = getDatabase(firebaseApp);
+			set(ref(database, `users/${account.user.uid}`), {
+				displayName: account.user.displayName,
+				photoURL: account.user.photoURL,
+			});
             console.log(account)
             setLoading(false);
         } catch (e) {
