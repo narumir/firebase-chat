@@ -21,13 +21,13 @@ export default function RegisterPage() {
     const [errorFormSubmit, setErrorFormSubmit] = useState<string>();
     const [loading, setLoading] = useState<boolean>(false);
     const { register, handleSubmit, formState: { errors } } = useForm<LoginFormData>();
-	
     const onSubmit = handleSubmit(async (data) => {
         setLoading(true);
         try {
             const auth = getAuth();
             const account = await signInWithEmailAndPassword(auth, data.email, data.password)
             console.log(account)
+			
             setLoading(false);
         } catch (e) {
             const err = e as Error;
@@ -55,7 +55,7 @@ export default function RegisterPage() {
 
                 {errorFormSubmit && <p>${errorFormSubmit}</p>}
                 <input type="submit" disabled={loading} />
-                <Link style={{ color: "gray", textDecoration: "none" }} to="/login">이미 아이디가 있다면...</Link>
+                <Link style={{ color: "gray", textDecoration: "none" }} to="/register">아직 회원이 아니라면...</Link>
             </form>
         </div>
     );
