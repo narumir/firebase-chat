@@ -43,7 +43,7 @@ function App() {
   }, [dispatch, navigate]);
   return (
     <div className="App">
-      <p style={{ color: "white" }}>{email}</p>
+      <p style={{ color: "white" }}>you are email is {email}</p>
       <Outlet />
     </div>
   );
