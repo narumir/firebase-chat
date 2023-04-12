@@ -24,26 +24,26 @@ import {
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const email:string = useSelector<RootState>((state) => state.user.currentUser?.email ?? "") as string;
+  const email: string = useSelector<RootState>((state) => state.user.currentUser?.email ?? "") as string;
   useEffect(() => {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
-		navigate(user ? "/" : "/login");
-		if(user) {
-			const data = {
-				email: user.email as string,
-				displayName: user.displayName as string,
-				photoURL: user.photoURL as string,
-			}
-			dispatch(setUser(data));
-		} else {
-			dispatch(setUser());
-		}
-	});
-  }, []);
+      navigate(user ? "/" : "/login");
+      if (user) {
+        const data = {
+          email: user.email as string,
+          displayName: user.displayName as string,
+          photoURL: user.photoURL as string,
+        }
+        dispatch(setUser(data));
+      } else {
+        dispatch(setUser());
+      }
+    });
+  }, [dispatch, navigate]);
   return (
     <div className="App">
-	  <p style={{color: "white"}}>{email}</p>
+      <p style={{ color: "white" }}>{email}</p>
       <Outlet />
     </div>
   );
