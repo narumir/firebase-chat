@@ -44,7 +44,7 @@ jobs:
             ${{ runner.os }}-npm-
 
       - name: Dependency Install
-        if: steps.npm-cache.outputs.cache-hit != ''
+        if: steps.npm-cache.outputs.cache-hit != 'true'
         run: npm ci
 
       - name: Build Project
