@@ -40,7 +40,8 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: ${{ runner.os }}-npm-
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
       - name: Dependency Install
         if: steps.npm-cache.outputs.cache-hit != 'true'
