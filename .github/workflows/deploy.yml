@@ -39,8 +39,7 @@ jobs:
         with:
           path: ~/.npm-global/lib/node_modules/firebase
           key: ${{ runner.os }}-firebase-${{ hashFiles('**/firebase/package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-firebase-
+          restore-keys: ${{ runner.os }}-firebase-
 
       - name: Install firebase cli
         run: npm install -g firebase-tools
@@ -51,8 +50,7 @@ jobs:
         with:
           path: ~/.npm
           key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-npm-
+          restore-keys: ${{ runner.os }}-npm-
 
       - name: Dependency Install
         if: steps.npm-cache.outputs.cache-hit != 'true'
