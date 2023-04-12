@@ -34,13 +34,28 @@ jobs:
       - name: Cache firebase cli
         id: cli_cache
         uses: actions/cache@v3
+        env:
+          cli-name: firebase
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-build-${{ env.cache-name }}
+          path: ~/.npm-global/lib/node_modules/firebase
+          key: ${{ runner.os }}-firebase-${{ hashFiles('**/firebase/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-firebase-
 
       - name: Install firebase cli
-        if: steps.cli_cache.outputs.cache-hit != 'true'
-        run: npm install -g firebase-tools
+        run: |
+          if ! command -v firebase &> /dev/null
+          then
+              npm install -g firebase
+          fi
+
+      - name: Cache NPM packages
+        uses: actions/cache@v2.1.6
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-npm-
 
       - name: Dependency Install
         run: npm ci
