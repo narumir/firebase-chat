@@ -28,11 +28,14 @@ jobs:
           ref: main
       - name: Setup Node
         uses: actions/setup-node@v3
+        id: npm-cache
         with:
           node-version: '18.x'
           cache: 'npm'
 
-      - run: npm ci
+      - if: ${{ steps.npm-cache.outputs.cache-hit != 'true' }}
+        name: Install Dependency
+        run: npm ci
 
       - name: Install firebase cli
         run: npm install -g firebase-tools
