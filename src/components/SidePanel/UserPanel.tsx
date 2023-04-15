@@ -1,6 +1,9 @@
 import {
+  ChangeEvent,
   useCallback,
+  useRef,
 } from "react";
+import mime from "mime";
 import {
   Dropdown,
   Image,
@@ -11,6 +14,12 @@ import {
 import {
   getAuth,
 } from "firebase/auth";
+import {
+  UploadMetadata,
+  getStorage,
+  ref,
+  uploadBytes,
+} from "firebase/storage";
 import {
   clearUser,
 } from "src/redux/actions/user_action";
@@ -29,6 +38,26 @@ function UserPanel() {
       dispatch(clearUser());
     }
   }, [dispatch]);
+  const onOpenImage = useCallback(() => {
+    openImageRef.current?.click();
+  }, []);
+  const handleProfileImageChange = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
+    const target = e.target as HTMLInputElement;
+    if (target.files?.length === 0 || target.files == null) {
+      return;
+    }
+    try {
+      const file = target.files[0];
+      const metadata: UploadMetadata = { contentType: mime.getType(file.name) ?? "" };
+      const storage = getStorage();
+      const storageRef = ref(storage, `/user_image/${user?.uid}`);
+      const uploadedfile = await uploadBytes(storageRef, file, metadata);
+      console.log(uploadedfile);
+    } catch (e) {
+
+    }
+  }, [user]);
+  const openImageRef = useRef<HTMLInputElement>(null);
   return (
     <div>
       <h3 style={{ color: "white" }}>
@@ -45,7 +74,14 @@ function UserPanel() {
             width: "30px",
             height: "30px",
             marginTop: "3px",
-          }} />
+          }}
+        />
+        <input
+          accept="image/jpeg, image/png"
+          style={{ display: "none" }}
+          type="file"
+          ref={openImageRef}
+          onChange={handleProfileImageChange} />
         <Dropdown>
           <Dropdown.Toggle
             style={{
@@ -56,7 +92,7 @@ function UserPanel() {
             {user && user.displayName}
           </Dropdown.Toggle>
           <Dropdown.Menu>
-            <Dropdown.Item>프로필 사진 변경</Dropdown.Item>
+            <Dropdown.Item onClick={onOpenImage}>프로필 사진 변경</Dropdown.Item>
             <Dropdown.Item onClick={logout}>로그아웃</Dropdown.Item>
           </Dropdown.Menu>
         </Dropdown>

@@ -28,6 +28,7 @@ function App() {
           email: user.email as string,
           displayName: user.displayName as string,
           photoURL: user.photoURL as string,
+          uid: user.uid,
         }
         dispatch(setUser(data));
       } else {
