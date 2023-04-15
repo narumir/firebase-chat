@@ -3,7 +3,6 @@ import {
   useCallback,
   useRef,
 } from "react";
-import mime from "mime";
 import {
   Dropdown,
   Image,
@@ -15,18 +14,26 @@ import {
   getAuth,
 } from "firebase/auth";
 import {
-  UploadMetadata,
-  getStorage,
-  ref,
-  uploadBytes,
+  getDownloadURL,
 } from "firebase/storage";
 import {
-  clearUser,
+  clearUser, setUser,
 } from "src/redux/actions/user_action";
 import {
   useAppDispatch,
   useAppSelector,
 } from "src/hooks/useStore";
+import {
+  uploadImage,
+} from "src/storage-util";
+import {
+  getCurrentUser,
+  reloadUserProfile,
+  updateUserProfile,
+} from "src/auth-util";
+import {
+  updateUserInfo,
+} from "src/db-util";
 
 function UserPanel() {
   const user = useAppSelector((state) => state.user.currentUser);
@@ -43,20 +50,31 @@ function UserPanel() {
   }, []);
   const handleProfileImageChange = useCallback(async (e: ChangeEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
-    if (target.files?.length === 0 || target.files == null) {
+    if (target.files?.length === 0 || target.files == null || user == null) {
       return;
     }
     try {
       const file = target.files[0];
-      const metadata: UploadMetadata = { contentType: mime.getType(file.name) ?? "" };
-      const storage = getStorage();
-      const storageRef = ref(storage, `/user_image/${user?.uid}`);
-      const uploadedfile = await uploadBytes(storageRef, file, metadata);
-      console.log(uploadedfile);
+      const uploadedFile = await uploadImage(file, `/user_image/${user.uid}`);
+      const newPhotoURL = await getDownloadURL(uploadedFile.ref);
+      await updateUserProfile({ photoURL: newPhotoURL });
+      await updateUserInfo(user.uid, { photoURL: newPhotoURL });
+      await reloadUserProfile();
+      const newUserProfile = getCurrentUser();
+      if (newUserProfile == null) {
+        return;
+      }
+      const dsaf = {
+        email: newUserProfile.email ?? "",
+        displayName: newUserProfile.displayName ?? "",
+        photoURL: newUserProfile.photoURL ?? "",
+        uid: newUserProfile.uid ?? "",
+      }
+      dispatch(setUser(dsaf))
     } catch (e) {
 
     }
-  }, [user]);
+  }, [user, dispatch]);
   const openImageRef = useRef<HTMLInputElement>(null);
   return (
     <div>
