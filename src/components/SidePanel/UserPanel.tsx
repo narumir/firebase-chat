@@ -1,4 +1,7 @@
 import {
+    useCallback,
+} from "react";
+import {
     Dropdown,
     Image,
 } from "react-bootstrap";
@@ -6,12 +9,27 @@ import {
     IoIosChatboxes,
 } from "react-icons/io";
 import {
+    useDispatch,
     useSelector,
 } from "react-redux";
 import { RootState } from "src/store";
+import {
+    getAuth,
+} from "firebase/auth";
+import {
+    clearUser,
+} from "src/redux/actions/user_action";
 
 function UserPanel() {
     const user = useSelector((state: RootState) => state.user.currentUser);
+    const dispatch = useDispatch();
+    const logout = useCallback(async () => {
+        if (window.confirm("정말로 로그아웃 하겠습니까?")) {
+            const auth = getAuth();
+            await auth.signOut();
+            dispatch(clearUser());
+        }
+    }, [dispatch]);
     return (
         <div>
             <h3 style={{ color: "white" }}>
@@ -40,7 +58,7 @@ function UserPanel() {
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                         <Dropdown.Item>프로필 사진 변경</Dropdown.Item>
-                        <Dropdown.Item>로그인</Dropdown.Item>
+                        <Dropdown.Item onClick={logout}>로그아웃</Dropdown.Item>
                     </Dropdown.Menu>
                 </Dropdown>
             </div>
