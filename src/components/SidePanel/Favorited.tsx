@@ -1,9 +1,9 @@
 
 
 function Favorited() {
-    return (
-        <></>
-    );
+  return (
+    <></>
+  );
 }
 
 export default Favorited;

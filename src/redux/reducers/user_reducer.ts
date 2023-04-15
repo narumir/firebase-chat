@@ -4,10 +4,10 @@ import {
 import {
   setUser,
   clearUser,
-} from "../actions/user_action";
+} from "src/redux/actions/user_action";
 import {
   User
-} from "../types/user_type";
+} from "src/redux/types/user_type";
 
 const initialState: { isLoading: boolean, currentUser?: User } = {
   currentUser: undefined,

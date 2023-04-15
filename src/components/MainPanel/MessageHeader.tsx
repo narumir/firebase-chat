@@ -1,10 +1,10 @@
 
 function MessageHeader() {
-    return (
-        <div>
+  return (
+    <div>
 
-        </div>
-    );
+    </div>
+  );
 }
 
 export default MessageHeader;

@@ -1,9 +1,9 @@
 
 
 function ChatRooms() {
-    return (
-        <></>
-    );
+  return (
+    <></>
+  );
 }
 
 export default ChatRooms;

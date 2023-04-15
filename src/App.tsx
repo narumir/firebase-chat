@@ -13,7 +13,7 @@ import {
 import ChatPage from 'src/pages/chat';
 import {
   setUser
-} from "./redux/actions/user_action";
+} from "src/redux/actions/user_action";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {

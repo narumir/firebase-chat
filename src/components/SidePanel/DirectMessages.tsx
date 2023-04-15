@@ -1,9 +1,9 @@
 
 
 function DirectMessages() {
-    return (
-        <></>
-    );
+  return (
+    <></>
+  );
 }
 
 export default DirectMessages;

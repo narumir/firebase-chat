@@ -1,10 +1,10 @@
 
 function MessageForm() {
-    return (
-        <div>
+  return (
+    <div>
 
-        </div>
-    );
+    </div>
+  );
 }
 
 export default MessageForm;

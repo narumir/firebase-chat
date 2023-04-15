@@ -19,11 +19,11 @@ const firebaseConfig = {
 export let firebaseApp: any;
 export let analytics: any;
 
-export const initializeFirebase = ()=> {
-  if(firebaseApp == null) {
+export const initializeFirebase = () => {
+  if (firebaseApp == null) {
     firebaseApp = initializeApp(firebaseConfig);
   }
-  if(analytics == null) {
+  if (analytics == null) {
     analytics = getAnalytics(firebaseApp);
   }
 }
