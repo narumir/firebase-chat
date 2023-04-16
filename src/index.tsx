@@ -12,7 +12,7 @@ import {
 } from "react-redux";
 import {
   store,
-} from './store';
+} from 'src/redux/store';
 import {
   initializeFirebase,
 } from './firebase';

@@ -14,29 +14,16 @@ import {
   getAuth,
 } from "firebase/auth";
 import {
-  getDownloadURL,
-} from "firebase/storage";
-import {
-  clearUser, setUser,
-} from "src/redux/actions/user_action";
-import {
   useAppDispatch,
   useAppSelector,
-} from "src/hooks/useStore";
+} from "src/redux/useStore";
 import {
-  uploadImage,
-} from "src/storage-util";
-import {
-  getCurrentUser,
-  reloadUserProfile,
-  updateUserProfile,
-} from "src/auth-util";
-import {
-  updateUserInfo,
-} from "src/db-util";
+  uploadUserPhoto,
+  clearUser,
+} from "src/redux/reducers";
 
 function UserPanel() {
-  const user = useAppSelector((state) => state.user.currentUser);
+  const user = useAppSelector((state) => state.account.currentUser);
   const dispatch = useAppDispatch();
   const logout = useCallback(async () => {
     if (window.confirm("정말로 로그아웃 하겠습니까?")) {
@@ -55,22 +42,7 @@ function UserPanel() {
     }
     try {
       const file = target.files[0];
-      const uploadedFile = await uploadImage(file, `/user_image/${user.uid}`);
-      const newPhotoURL = await getDownloadURL(uploadedFile.ref);
-      await updateUserProfile({ photoURL: newPhotoURL });
-      await updateUserInfo(user.uid, { photoURL: newPhotoURL });
-      await reloadUserProfile();
-      const newUserProfile = getCurrentUser();
-      if (newUserProfile == null) {
-        return;
-      }
-      const dsaf = {
-        email: newUserProfile.email ?? "",
-        displayName: newUserProfile.displayName ?? "",
-        photoURL: newUserProfile.photoURL ?? "",
-        uid: newUserProfile.uid ?? "",
-      }
-      dispatch(setUser(dsaf))
+      await dispatch(uploadUserPhoto(file));
     } catch (e) {
 
     }
@@ -83,7 +55,6 @@ function UserPanel() {
         &nbsp;
         Chat App
       </h3>
-
       <div style={{ display: "flex", marginBottom: "1rem" }}>
         <Image
           roundedCircle

@@ -2,12 +2,16 @@ import {
   configureStore,
 } from "@reduxjs/toolkit";
 import {
-  userReducer
-} from "src/redux/reducers/user_reducer";
+  dbReducer,
+  storageReducer,
+  accountReducer,
+} from "./reducers";
 
 export const store = configureStore({
   reducer: {
-    user: userReducer,
+    account: accountReducer,
+    storage: storageReducer,
+    db: dbReducer,
   },
 });
 

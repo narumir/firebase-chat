@@ -1,3 +1,4 @@
+import ChatPage from 'src/pages/chat';
 import {
   useEffect,
 } from "react";
@@ -5,35 +6,24 @@ import {
   useNavigate,
 } from "react-router-dom"
 import {
-  useDispatch,
-} from "react-redux"
-import {
   getAuth,
 } from "firebase/auth";
-import ChatPage from 'src/pages/chat';
 import {
-  setUser
-} from "src/redux/actions/user_action";
+  setUser,
+} from "src/redux/reducers";
+import {
+  useAppDispatch,
+} from "src/redux/useStore";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
       navigate(user ? "/" : "/login");
-      if (user) {
-        const data = {
-          email: user.email as string,
-          displayName: user.displayName as string,
-          photoURL: user.photoURL as string,
-          uid: user.uid,
-        }
-        dispatch(setUser(data));
-      } else {
-        dispatch(setUser());
-      }
+      dispatch(setUser());
     });
   }, [dispatch, navigate]);
   return (

@@ -8,7 +8,7 @@ import type {
 import type {
   RootState,
   AppDispatch
-} from "src/store";
+} from "src/redux/store";
 
 export const useAppDispatch: () => AppDispatch = useDispatch;
 export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
