@@ -16,8 +16,7 @@ type Profile = {
   photoURL?: string;
 }
 export const updateUserData = createAsyncThunk("db/updateUserInfo", async (data: Profile, thunkAPI) => {
-
-  const rootState: RootState = thunkAPI.getState() as RootState;
+  const rootState = thunkAPI.getState() as RootState;
   const user = rootState.account.currentUser;
   if (user == null) {
     throw new Error("Please login before update user data");

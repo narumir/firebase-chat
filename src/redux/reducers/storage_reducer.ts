@@ -26,7 +26,7 @@ export const uploadUserPhoto = createAsyncThunk("storage/uploadUserPhoto", async
   const metadata: UploadMetadata = {
     contentType: mime.getType(file.name) ?? "",
   };
-  const rootState: RootState = thunkAPI.getState() as RootState;
+  const rootState = thunkAPI.getState() as RootState;
   const user = rootState.account.currentUser;
   if (user == null) {
     throw new Error("Please login before upload photo");
