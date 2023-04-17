@@ -14,6 +14,12 @@ import {
   FaRegSmileWink,
   FaPlus,
 } from "react-icons/fa";
+import {
+  createChatRoom,
+} from "src/redux/reducers";
+import {
+  useAppDispatch,
+} from "src/redux/useStore";
 
 type CreateChatRoomFormData = {
   name: string;
@@ -21,6 +27,7 @@ type CreateChatRoomFormData = {
 }
 
 function ChatRooms() {
+  const dispatch = useAppDispatch();
   const [isShow, setModalShow] = useState<boolean>(false);
   const onModalOpen = useCallback(() => {
     setModalShow(true);
@@ -28,9 +35,11 @@ function ChatRooms() {
   const onModalClose = useCallback(() => {
     setModalShow(false);
   }, []);
-  const { register, handleSubmit, formState: { errors } } = useForm<CreateChatRoomFormData>();
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<CreateChatRoomFormData>();
   const onChatroomSubmit = handleSubmit(async (data) => {
-    console.log(data);
+    await dispatch(createChatRoom(data));
+    reset();
+    setModalShow(false);
   });
   return (
     <div>
