@@ -1,4 +1,5 @@
 import {
+  PayloadAction,
   createAsyncThunk,
   createSlice,
 } from "@reduxjs/toolkit";
@@ -13,6 +14,20 @@ import {
 import type {
   RootState,
 } from "src/redux/store";
+
+type DatabaseState = {
+  chatrooms: ChatRoomState[];
+}
+
+type ChatRoomState = {
+  key: string;
+  name: string;
+  description: string;
+  createdBy: {
+    displayName: string;
+    photoURL: string;
+  }
+}
 
 type Profile = {
   displayName?: string;
@@ -54,14 +69,22 @@ export const createChatRoom = createAsyncThunk("db/createChatRoom", async (data:
   };
   const updates: any = {};
   updates[`/rooms/${chatRoomKey}`] = chatRoom;
-  console.log(chatRoom);
-  await update(ref(database), updates)
+  await update(ref(database), updates);
 });
+
+
+const initialState: DatabaseState = {
+  chatrooms: [],
+};
 
 const dbSlice = createSlice({
   name: "storage",
-  initialState: {},
-  reducers: {},
+  initialState,
+  reducers: {
+    addChatRoom(state, action: PayloadAction<ChatRoomState>) {
+      state.chatrooms.push(action.payload);
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(updateUserData.fulfilled, (state, action) => {
@@ -70,8 +93,9 @@ const dbSlice = createSlice({
   },
 });
 
-// export const {
-// } = dbSlice.actions;
+export const {
+  addChatRoom,
+} = dbSlice.actions;
 export const {
   reducer: dbReducer,
 } = dbSlice;
