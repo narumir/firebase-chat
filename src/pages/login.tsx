@@ -25,9 +25,7 @@ export default function RegisterPage() {
     setLoading(true);
     try {
       const auth = getAuth();
-      const account = await signInWithEmailAndPassword(auth, data.email, data.password)
-      console.log(account)
-
+      await signInWithEmailAndPassword(auth, data.email, data.password)
       setLoading(false);
     } catch (e) {
       const err = e as Error;

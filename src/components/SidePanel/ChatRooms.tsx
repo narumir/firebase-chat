@@ -10,7 +10,9 @@ import {
 import {
   useChatRoomListener,
 } from "src/hooks/useChatRoomListener";
-import { useAppSelector } from "src/redux/useStore";
+import {
+  useAppSelector,
+} from "src/redux/useStore";
 
 function ChatRooms() {
   const [isShow, setModalShow] = useState<boolean>(false);

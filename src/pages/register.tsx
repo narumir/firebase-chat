@@ -51,7 +51,6 @@ export default function RegisterPage() {
         displayName: account.user.displayName,
         photoURL: account.user.photoURL,
       });
-      console.log(account)
       setLoading(false);
     } catch (e) {
       const err = e as Error;
