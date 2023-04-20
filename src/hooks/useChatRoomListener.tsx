@@ -2,7 +2,6 @@ import {
   getDatabase,
   off,
   onChildAdded,
-  onChildRemoved,
   ref,
 } from "firebase/database";
 import {
@@ -23,12 +22,8 @@ export const useChatRoomListener = () => {
     onChildAdded(chatRoomsRef, (snapshot) => {
       dispatch(addChatRoom(snapshot.val()));
     });
-    onChildRemoved(chatRoomsRef, (snapshot) => {
-      console.log(snapshot.key);
-    });
     return () => {
       off(chatRoomsRef, "child_added");
-      off(chatRoomsRef, "child_removed");
     };
   }, [dispatch]);
 };
