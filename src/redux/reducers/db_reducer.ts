@@ -17,6 +17,7 @@ import type {
 
 type DatabaseState = {
   chatrooms: ChatRoomState[];
+  currentChatRoomID?: string;
 }
 
 type ChatRoomState = {
@@ -75,6 +76,7 @@ export const createChatRoom = createAsyncThunk("db/createChatRoom", async (data:
 
 const initialState: DatabaseState = {
   chatrooms: [],
+  currentChatRoomID: undefined
 };
 
 const dbSlice = createSlice({
@@ -84,6 +86,9 @@ const dbSlice = createSlice({
     addChatRoom(state, action: PayloadAction<ChatRoomState>) {
       state.chatrooms.push(action.payload);
     },
+    selectChatRoom(state, action: PayloadAction<string>) {
+      state.currentChatRoomID = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -95,6 +100,7 @@ const dbSlice = createSlice({
 
 export const {
   addChatRoom,
+  selectChatRoom,
 } = dbSlice.actions;
 export const {
   reducer: dbReducer,

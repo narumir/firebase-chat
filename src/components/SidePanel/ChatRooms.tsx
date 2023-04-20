@@ -1,5 +1,6 @@
 import CreateChatRoomModal from "./CreateRoom";
 import {
+  MouseEventHandler,
   useCallback,
   useState,
 } from "react";
@@ -11,6 +12,10 @@ import {
   useChatRoomListener,
 } from "src/hooks/useChatRoomListener";
 import {
+  selectChatRoom,
+} from "src/redux/reducers";
+import {
+  useAppDispatch,
   useAppSelector,
 } from "src/redux/useStore";
 
@@ -23,8 +28,16 @@ function ChatRooms() {
     setModalShow(false);
   }, []);
   useChatRoomListener();
+  const dispatch = useAppDispatch();
   const chatRooms = useAppSelector((state) => state.db.chatrooms);
-
+  const currentChatRoomID = useAppSelector((state) => state.db.currentChatRoomID);
+  const handleSelectChatRoom = useCallback<MouseEventHandler<HTMLLIElement>>((e) => {
+    const key = e.currentTarget.getAttribute("data-key");
+    if (key == null) {
+      return;
+    }
+    dispatch(selectChatRoom(key));
+  }, [dispatch]);
   return (
     <div>
       <div style={{ position: "relative", width: "100%", display: "flex", alignItems: "center" }}>
@@ -35,7 +48,7 @@ function ChatRooms() {
       <CreateChatRoomModal isShow={isShow} onModalClose={onModalClose} />
       <ul style={{ listStyleType: "none" }}>
         {chatRooms.map((room) => (
-          <li key={room.key}>{room.name}</li>
+          <li key={room.key} data-key={room.key} style={{ borderRadius: "12px", paddingLeft: "12px", backgroundColor: room.key === currentChatRoomID ? "rgb(29, 155, 240)" : "" }} onClick={handleSelectChatRoom}>{room.name}</li>
         ))}
       </ul>
     </div>
