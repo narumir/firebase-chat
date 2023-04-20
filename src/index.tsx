@@ -4,6 +4,7 @@ import App from './App';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
 import {
+  Outlet,
   RouterProvider,
   createBrowserRouter,
 } from "react-router-dom";
@@ -21,15 +22,21 @@ import './index.css';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
-  },
-  {
-    path: "/register",
-    element: <RegisterPage />
-  },
-  {
-    path: "/login",
-    element: <LoginPage />
+    element: <Outlet />,
+    children: [
+      {
+        path: "/",
+        element: <App />,
+      },
+      {
+        path: "/register",
+        element: <RegisterPage />
+      },
+      {
+        path: "/login",
+        element: <LoginPage />
+      },
+    ],
   },
 ]);
 

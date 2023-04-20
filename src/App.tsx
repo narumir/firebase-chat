@@ -22,8 +22,8 @@ function App() {
   useEffect(() => {
     const auth = getAuth();
     auth.onAuthStateChanged((user) => {
-      navigate(user ? "/" : "/login");
       dispatch(setUser());
+      navigate(user ? "/" : "/login");
     });
   }, [dispatch, navigate]);
   return (
