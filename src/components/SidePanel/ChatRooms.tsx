@@ -48,7 +48,7 @@ function ChatRooms() {
       <CreateChatRoomModal isShow={isShow} onModalClose={onModalClose} />
       <ul style={{ listStyleType: "none" }}>
         {chatRooms.map((room) => (
-          <li key={room.key} data-key={room.key} style={{ borderRadius: "12px", paddingLeft: "12px", backgroundColor: room.key === currentChatRoomID ? "rgb(29, 155, 240)" : "" }} onClick={handleSelectChatRoom}>{room.name}</li>
+          <li key={room.id} data-key={room.id} style={{ borderRadius: "12px", paddingLeft: "12px", backgroundColor: room.id === currentChatRoomID ? "rgb(29, 155, 240)" : "" }} onClick={handleSelectChatRoom}>{room.name}</li>
         ))}
       </ul>
     </div>

@@ -21,7 +21,7 @@ type DatabaseState = {
 }
 
 type ChatRoomState = {
-  key: string;
+  id: string;
   name: string;
   description: string;
   createdBy: {
@@ -51,16 +51,13 @@ type ChatRoom = {
 export const createChatRoom = createAsyncThunk("db/createChatRoom", async (data: ChatRoom, thunkAPI) => {
   const state = thunkAPI.getState() as RootState;
   const user = state.account.currentUser;
-  if (user == null) {
+  const database = getDatabase();
+  const chatRoomID = push(child(ref(database), `rooms`)).key;
+  if (user == null || chatRoomID == null) {
     throw new Error("Please login before create chat room.");
   }
-  const database = getDatabase();
-  const chatRoomKey = push(child(ref(database), `rooms`)).key;
-  if (chatRoomKey == null) {
-    return;
-  }
   const chatRoom = {
-    key: chatRoomKey,
+    id: chatRoomID,
     name: data.name,
     description: data.description,
     createdBy: {
@@ -68,11 +65,32 @@ export const createChatRoom = createAsyncThunk("db/createChatRoom", async (data:
       photoURL: user.photoURL,
     },
   };
-  const updates: any = {};
-  updates[`/rooms/${chatRoomKey}`] = chatRoom;
-  await update(ref(database), updates);
+  await update(ref(database, `rooms/${chatRoomID}`), chatRoom);
 });
 
+export const sendMessage = createAsyncThunk("db/sendMessage", async (data: string, thunkAPI) => {
+  const state = thunkAPI.getState() as RootState;
+  const user = state.account.currentUser;
+  const { currentChatRoomID } = state.db;
+  if (user == null || currentChatRoomID == null) {
+    return;
+  }
+  const database = getDatabase();
+  const messageKey = push(child(ref(database), `messages/${currentChatRoomID}`)).key;
+  if (messageKey == null) {
+    return;
+  }
+  const message = {
+    key: messageKey,
+    content: data,
+    timestamp: Date.now(),
+    user: {
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+    },
+  };
+  await update(ref(database, `/messages/${currentChatRoomID}/${messageKey}`), message);
+});
 
 const initialState: DatabaseState = {
   chatrooms: [],
@@ -93,6 +111,9 @@ const dbSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(updateUserData.fulfilled, (state, action) => {
+
+      })
+      .addCase(sendMessage.fulfilled, (state, action) => {
 
       })
   },
