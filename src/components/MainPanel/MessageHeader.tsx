@@ -1,4 +1,7 @@
 import {
+  FC,
+} from "react";
+import {
   FaLock,
 } from "react-icons/fa";
 import {
@@ -16,8 +19,15 @@ import {
   Image,
   Accordion,
 } from "react-bootstrap";
+import {
+  ChatRoomState,
+} from "src/redux/reducers";
 
-function MessageHeader() {
+type IProps = {
+  chatroom: ChatRoomState;
+}
+
+const MessageHeader: FC<IProps> = (props) => {
   return (
     <div style={{ width: "100%", height: "186px", border: "0.2rem solid #ececec", borderRadius: "4px", padding: "1rem", marginBottom: "1rem" }}>
       <Container>
@@ -25,7 +35,7 @@ function MessageHeader() {
           <Col>
             <h2>
               <FaLock />
-              ChatRoom Name
+              {props.chatroom.name}
               <MdFavorite />
             </h2>
           </Col>
@@ -40,7 +50,8 @@ function MessageHeader() {
         </Row>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <p>
-            <Image /> user name
+            <Image roundedCircle style={{ width: "30px", height: "30px", marginTop: "3px" }} src={props.chatroom.createdBy.photoURL} />
+            {props.chatroom.createdBy.displayName}
           </p>
         </div>
         <Row>
@@ -49,13 +60,7 @@ function MessageHeader() {
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Description</Accordion.Header>
                 <Accordion.Body>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                  aliquip ex ea commodo consequat. Duis aute irure dolor in
-                  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                  culpa qui officia deserunt mollit anim id est laborum.
+                  {props.chatroom.description}
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>

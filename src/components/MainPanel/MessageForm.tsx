@@ -43,6 +43,7 @@ function MessageForm() {
     const target = e.target as HTMLTextAreaElement;
     setContent(target.value);
   }, []);
+  console.log(errers);
   return (
     <div>
       <Form onSubmit={handleMessageSubmit}>

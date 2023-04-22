@@ -20,7 +20,7 @@ type DatabaseState = {
   currentChatRoomID?: string;
 }
 
-type ChatRoomState = {
+export type ChatRoomState = {
   id: string;
   name: string;
   description: string;
@@ -68,6 +68,18 @@ export const createChatRoom = createAsyncThunk("db/createChatRoom", async (data:
   await update(ref(database, `rooms/${chatRoomID}`), chatRoom);
 });
 
+export type MessageState = {
+  id: string;
+  content?: string;
+  image?: string;
+  timestamp: number;
+  user: {
+    id: string;
+    photoURL: string;
+    displayName: string;
+  }
+}
+
 export const sendMessage = createAsyncThunk("db/sendMessage", async (data: string, thunkAPI) => {
   const state = thunkAPI.getState() as RootState;
   const user = state.account.currentUser;
@@ -81,10 +93,11 @@ export const sendMessage = createAsyncThunk("db/sendMessage", async (data: strin
     return;
   }
   const message = {
-    key: messageKey,
+    id: messageKey,
     content: data,
     timestamp: Date.now(),
     user: {
+      id: user.uid,
       displayName: user.displayName,
       photoURL: user.photoURL,
     },
