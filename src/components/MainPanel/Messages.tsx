@@ -30,6 +30,7 @@ const Messages: FC<IProps> = ({
       const message: MessageState = {
         id: val.id,
         content: val.content,
+        image: val.image,
         timestamp: val.timestamp,
         user: {
           id: val.user.id,

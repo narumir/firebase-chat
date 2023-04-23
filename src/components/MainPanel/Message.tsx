@@ -25,7 +25,7 @@ const Message: FC<IProps> = ({ message }) => {
           <h6>{message.user.displayName} &nbsp;
             <span style={{ fontSize: "10px", color: "gray" }}>{dayjs(message.timestamp).fromNow()}</span>
           </h6>
-          {message.image && <img style={{ maxWidth: "300px" }} alt="" src="" />}
+          {message.image && <img style={{ maxWidth: "300px" }} alt={message.image} src={message.image} />}
           {message.content && <p>{message.content}</p>}
         </div>
       </Card.Body>

@@ -92,9 +92,34 @@ export const sendMessage = createAsyncThunk("db/sendMessage", async (data: strin
   if (messageKey == null) {
     return;
   }
-  const message = {
+  const message: MessageState = {
     id: messageKey,
     content: data,
+    timestamp: Date.now(),
+    user: {
+      id: user.uid,
+      displayName: user.displayName,
+      photoURL: user.photoURL,
+    },
+  };
+  await update(ref(database, `/messages/${currentChatRoomID}/${messageKey}`), message);
+});
+
+export const sendImageMessage = createAsyncThunk("db/sendMessage", async (data: string, thunkAPI) => {
+  const state = thunkAPI.getState() as RootState;
+  const user = state.account.currentUser;
+  const { currentChatRoomID } = state.db;
+  if (user == null || currentChatRoomID == null) {
+    return;
+  }
+  const database = getDatabase();
+  const messageKey = push(child(ref(database), `messages/${currentChatRoomID}`)).key;
+  if (messageKey == null) {
+    return;
+  }
+  const message: MessageState = {
+    id: messageKey,
+    image: data,
     timestamp: Date.now(),
     user: {
       id: user.uid,
