@@ -1,5 +1,7 @@
 import {
+  ChangeEventHandler,
   FC,
+  useCallback,
 } from "react";
 import {
   FaLock,
@@ -25,9 +27,14 @@ import {
 
 type IProps = {
   chatroom: ChatRoomState;
+  search: string;
+  setSearchTerm: (val: string) => void;
 }
 
-const MessageHeader: FC<IProps> = (props) => {
+const MessageHeader: FC<IProps> = ({ chatroom, search, setSearchTerm }) => {
+  const handleSearchCahnge = useCallback<ChangeEventHandler<HTMLInputElement>>((e) => {
+    setSearchTerm(e.target.value);
+  }, [setSearchTerm]);
   return (
     <div style={{ width: "100%", height: "186px", border: "0.2rem solid #ececec", borderRadius: "4px", padding: "1rem", marginBottom: "1rem" }}>
       <Container>
@@ -35,7 +42,7 @@ const MessageHeader: FC<IProps> = (props) => {
           <Col>
             <h2>
               <FaLock />
-              {props.chatroom.name}
+              {chatroom.name}
               <MdFavorite />
             </h2>
           </Col>
@@ -44,14 +51,14 @@ const MessageHeader: FC<IProps> = (props) => {
               <InputGroup.Text>
                 <AiOutlineSearch />
               </InputGroup.Text>
-              <FormControl placeholder="Search Message" aria-label="Search Message" />
+              <FormControl placeholder="Search Message" value={search} onChange={handleSearchCahnge} aria-label="Search Message" />
             </InputGroup>
           </Col>
         </Row>
         <div style={{ display: "flex", justifyContent: "flex-end" }}>
           <p>
-            <Image roundedCircle style={{ width: "30px", height: "30px", marginTop: "3px" }} src={props.chatroom.createdBy.photoURL} />
-            {props.chatroom.createdBy.displayName}
+            <Image roundedCircle style={{ width: "30px", height: "30px", marginTop: "3px" }} src={chatroom.createdBy.photoURL} />
+            {chatroom.createdBy.displayName}
           </p>
         </div>
         <Row>
@@ -60,7 +67,7 @@ const MessageHeader: FC<IProps> = (props) => {
               <Accordion.Item eventKey="0">
                 <Accordion.Header>Description</Accordion.Header>
                 <Accordion.Body>
-                  {props.chatroom.description}
+                  {chatroom.description}
                 </Accordion.Body>
               </Accordion.Item>
             </Accordion>
