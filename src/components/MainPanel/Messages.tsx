@@ -61,7 +61,7 @@ const Messages: FC<IProps> = ({
 
   return (
     <div>
-      {serachResult.length > 0 && searchTerm.length > 0
+      {serachResult.length > 0 || searchTerm.length > 0
         ? serachResult.map((message) => (
           <Message key={message.id} message={message} />
         ))
