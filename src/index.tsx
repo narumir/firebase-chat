@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
+import dayjs from 'dayjs';
+import relativeTime from "dayjs/plugin/relativeTime";
 import {
   Outlet,
   RouterProvider,
@@ -17,10 +19,12 @@ import {
 import {
   initializeFirebase,
 } from './firebase';
+import {
+  GlobalStyle,
+} from './globalStyle';
 import './index.css';
-import dayjs from 'dayjs';
-import relativeTime from "dayjs/plugin/relativeTime";
-import 'dayjs/locale/ko'
+import 'dayjs/locale/ko';
+
 dayjs.locale('ko');
 dayjs.extend(relativeTime);
 
@@ -49,6 +53,7 @@ const element = document.getElementById('root') as HTMLElement;
 const root = ReactDOM.createRoot(element);
 root.render(
   <React.StrictMode>
+    <GlobalStyle />
     <ReduxProvider store={store}>
       <RouterProvider router={router} />
     </ReduxProvider>
