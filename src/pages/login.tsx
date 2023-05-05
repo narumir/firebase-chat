@@ -11,6 +11,15 @@ import {
   getAuth,
   signInWithEmailAndPassword,
 } from "firebase/auth";
+import {
+  AuthWrapperContainer,
+  AuthWarperError,
+  AuthWarperTitle,
+  AuthWarperInput,
+  AuthWarperLabel,
+  AuthWarperForm,
+  AuthWarperTitleContainer,
+} from "src/components/AuthWarper";
 
 type LoginFormData = {
   email: string;
@@ -38,23 +47,23 @@ export default function RegisterPage() {
   });
 
   return (
-    <div className="auth-wrapper">
-      <div style={{ textAlign: "center" }}>
-        <h3>Login</h3>
-      </div>
-      <form onSubmit={onSubmit}>
-        <label>Email</label>
-        <input type="email" {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
-        {errors.email?.type === "required" && <p>This email field is required.</p>}
+    <AuthWrapperContainer className="auth-wrapper">
+      <AuthWarperTitleContainer style={{ textAlign: "center" }}>
+        <AuthWarperTitle>Login</AuthWarperTitle>
+      </AuthWarperTitleContainer>
+      <AuthWarperForm onSubmit={onSubmit}>
+        <AuthWarperLabel>Email</AuthWarperLabel>
+        <AuthWarperInput type="email" {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
+        {errors.email?.type === "required" && <AuthWarperError>This email field is required.</AuthWarperError>}
 
-        <label>Password</label>
-        <input type="password" {...register("password", { required: true })} />
-        {errors.password?.type === "required" && <p>This password field is required.</p >}
+        <AuthWarperLabel>Password</AuthWarperLabel>
+        <AuthWarperInput type="password" {...register("password", { required: true })} />
+        {errors.password?.type === "required" && <AuthWarperError>This password field is required.</AuthWarperError >}
 
         {errorFormSubmit && <p>${errorFormSubmit}</p>}
-        <input type="submit" disabled={loading} />
+        <AuthWarperInput type="submit" disabled={loading} />
         <Link style={{ color: "gray", textDecoration: "none" }} to="/register">아직 회원이 아니라면...</Link>
-      </form>
-    </div>
+      </AuthWarperForm>
+    </AuthWrapperContainer>
   );
 }

@@ -22,6 +22,15 @@ import {
 import {
   firebaseApp,
 } from "src/firebase";
+import {
+  AuthWrapperContainer,
+  AuthWarperError,
+  AuthWarperTitle,
+  AuthWarperInput,
+  AuthWarperLabel,
+  AuthWarperForm,
+  AuthWarperTitleContainer,
+} from "src/components/AuthWarper";
 
 type RegisterFormData = {
   email: string;
@@ -63,34 +72,34 @@ export default function RegisterPage() {
   });
 
   return (
-    <div className="auth-wrapper">
-      <div style={{ textAlign: "center" }}>
-        <h3>Register</h3>
-      </div>
-      <form onSubmit={onSubmit}>
-        <label>Email</label>
-        <input type="email" {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
-        {errors.email?.type === "required" && <p>This email field is required.</p>}
+    <AuthWrapperContainer className="auth-wrapper">
+      <AuthWarperTitleContainer style={{ textAlign: "center" }}>
+        <AuthWarperTitle>Register</AuthWarperTitle>
+      </AuthWarperTitleContainer>
+      <AuthWarperForm onSubmit={onSubmit}>
+        <AuthWarperLabel>Email</AuthWarperLabel>
+        <AuthWarperInput type="email" {...register("email", { required: true, pattern: /^\S+@\S+$/i })} />
+        {errors.email?.type === "required" && <AuthWarperError>This email field is required.</AuthWarperError>}
 
-        <label>Name</label>
-        <input {...register("name", { required: true, maxLength: 10 })} />
-        {errors.name?.type === "required" && <p>This name field is required.</p>}
-        {errors.name?.type === "maxLength" && <p>Your Input exceed maxium length</p>}
+        <AuthWarperLabel>Name</AuthWarperLabel>
+        <AuthWarperInput {...register("name", { required: true, maxLength: 10 })} />
+        {errors.name?.type === "required" && <AuthWarperError>This name field is required.</AuthWarperError>}
+        {errors.name?.type === "maxLength" && <AuthWarperError>Your Input exceed maxium length</AuthWarperError>}
 
-        <label>Password</label>
-        <input type="password" {...register("password", { required: true, minLength: 6 })} />
-        {errors.password?.type === "required" && <p>This password field is required.</p >}
-        {errors.password?.type === "minLength" && <p>Password must have at least 6.</p>}
+        <AuthWarperLabel>Password</AuthWarperLabel>
+        <AuthWarperInput type="password" {...register("password", { required: true, minLength: 6 })} />
+        {errors.password?.type === "required" && <AuthWarperError>This password field is required.</AuthWarperError >}
+        {errors.password?.type === "minLength" && <AuthWarperError>Password must have at least 6.</AuthWarperError>}
 
-        <label>Password Confirm</label>
-        <input {...register("password_confirm", { required: true, validate: (value) => value === password.current })} type="password" />
-        {errors.password_confirm?.type === "required" && <p>This name field is required.</p>}
-        {errors.password_confirm?.type === "validate" && <p>The password field is not math.</p>}
+        <AuthWarperLabel>Password Confirm</AuthWarperLabel>
+        <AuthWarperInput {...register("password_confirm", { required: true, validate: (value) => value === password.current })} type="password" />
+        {errors.password_confirm?.type === "required" && <AuthWarperError>This name field is required.</AuthWarperError>}
+        {errors.password_confirm?.type === "validate" && <AuthWarperError>The password field is not math.</AuthWarperError>}
 
-        {errorFormSubmit && <p>${errorFormSubmit}</p>}
-        <input type="submit" disabled={loading} />
+        {errorFormSubmit && <AuthWarperError>${errorFormSubmit}</AuthWarperError>}
+        <AuthWarperInput type="submit" disabled={loading} />
         <Link style={{ color: "gray", textDecoration: "none" }} to="/login">이미 아이디가 있다면...</Link>
-      </form>
-    </div>
+      </AuthWarperForm>
+    </AuthWrapperContainer>
   );
 }
