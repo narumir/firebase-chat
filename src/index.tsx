@@ -22,7 +22,6 @@ import {
 import {
   GlobalStyle,
 } from './globalStyle';
-import './index.css';
 import 'dayjs/locale/ko';
 
 dayjs.locale('ko');

@@ -16,7 +16,6 @@ import {
   ChangeEvent,
 } from "react";
 import {
-  Button,
   Col,
   Form,
   ProgressBar,
@@ -29,6 +28,9 @@ import {
 import {
   useAppDispatch,
 } from "src/redux/useStore";
+import {
+  MessageFormButton,
+} from "../MessageButton";
 
 function MessageForm() {
   const [content, setContent] = useState<string | undefined>();
@@ -100,11 +102,11 @@ function MessageForm() {
       {(progress !== 0 && progress !== 100) && <ProgressBar style={{ marginTop: "16px" }} variant="warning" label={`${progress.toFixed(1)}%`} now={progress} />}
       <Row>
         <Col>
-          <Button onClick={handleMessageSubmit} disabled={loading} className="message-form-button" style={{ width: "100%" }}>Send</Button>
+          <MessageFormButton onClick={handleMessageSubmit} disabled={loading} style={{ width: "100%" }}>Send</MessageFormButton>
         </Col>
         <Col>
           <input type="file" hidden ref={fileUploadRef} onChange={handleFileChanged} accept="image/jpeg, image/png" />
-          <Button className="message-form-button" disabled={loading} style={{ width: "100%" }} onClick={handleUploadClick}>Upload</Button>
+          <MessageFormButton disabled={loading} style={{ width: "100%" }} onClick={handleUploadClick}>Upload</MessageFormButton>
         </Col>
       </Row>
     </div>
